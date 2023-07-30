@@ -4,10 +4,11 @@ import * as ImagePicker from 'expo-image-picker';
 import { SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as FileSystem from 'expo-file-system';
 
-const EmpProfile = ({ navigation }) => {
+const EmpProfile = ({navigation,navigation:{goBack}}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const employeeName = 'John Doe';
+  const employeeName = 'Shane Coelho';
 
   useEffect(() => {
     const backAction = () => {
@@ -25,7 +26,7 @@ const EmpProfile = ({ navigation }) => {
 
   useEffect(() => {
     fetchProfilePhoto();
-  }, []);
+  }, [profilePhoto]);
 
   const handleLogout = () => {
     AsyncStorage.clear().then(()=>{
@@ -34,6 +35,9 @@ const EmpProfile = ({ navigation }) => {
   };
 
   const selectProfilePhoto = async () => {
+    const token = await AsyncStorage.getItem('token');
+
+
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== 'granted') {
       alert('Permission to access camera roll is required!');
@@ -53,20 +57,39 @@ const EmpProfile = ({ navigation }) => {
 
       // Upload the selected profile photo to the server
       const formData = new FormData();
-      formData.append('profilePhoto', {
-        uri,
-        name: 'profilePhoto.jpg',
-        type: 'image/jpg',
+      console.log(uri)
+
+
+    const fileInfo = await FileSystem.getInfoAsync(uri);
+    const filename = fileInfo.uri.split('/').pop();
+    console.log(filename)
+
+
+     // Set the content type based on the file extension
+     const extension = filename.split('.').pop();
+     const contentType = `image/${extension}`;
+     console.log(contentType)
+
+      formData.append('file', {
+        uri: uri,
+      name: filename,
+      type: contentType,
       });
 
+      console.log(formData)
+
       // Make an API request to update the profile photo
-      fetch("https://e5ff-115-69-246-225.ngrok-free.app/updatephoto", {
-        method: 'PUT',
+      fetch("https://213a-45-114-251-176.ngrok-free.app/avatar", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`,
+        },
         body: formData,
       })
         .then((response) => response.json())
         .then((data) => {
-          console.log(data.message);
+          console.log(data);
         })
         .catch((error) => {
           console.log(error);
@@ -75,25 +98,44 @@ const EmpProfile = ({ navigation }) => {
   };
 
 
-  const fetchProfilePhoto = () => {
+  const fetchProfilePhoto = async() => {
+
+    const token = await AsyncStorage.getItem('token');
     // Make an API request to fetch the profile photo
-    fetch("https://e5ff-115-69-246-225.ngrok-free.app/fetchphoto", {
+    try{
+    const response= await fetch("https://213a-45-114-251-176.ngrok-free.app/fetchavatar", {
       method: 'GET',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setProfilePhoto({ uri: data.profilePhoto });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+    const blob = await response.blob();
+    const uri = URL.createObjectURL(blob);
+    console.log(uri)
+    setProfilePhoto({uri});
+  }else{
+    console.log('Error:', response.status);
+  }
+}catch(error){
+    console.log(error);
+  }
+      
   };
 
-  const navigateToScreen = (screenName) => {
+  const handlePersonalInfoPress = () => {
     // Navigate to the specified screen based on screenName
     // You can use React Navigation or any other navigation library here
-    console.log('Navigating to', screenName);
+    navigation.navigate('EmpPersonalInfo');
   };
+
+  const handlePastLeavePress = () => {
+    // Navigate to the specified screen based on screenName
+    // You can use React Navigation or any other navigation library here
+    navigation.navigate('EmpPastLeave');
+  };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -114,7 +156,7 @@ const EmpProfile = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuOptionContainer}
-          onPress={() => navigateToScreen('PersonalInfo')}
+          onPress={handlePersonalInfoPress}
         >
           <View style={styles.menuOptionIconContainer}>
             <Ionicons name="md-person" size={24} color="#000" />
@@ -134,7 +176,7 @@ const EmpProfile = ({ navigation }) => {
 
         <TouchableOpacity
           style={styles.menuOptionContainer}
-          onPress={() => navigateToScreen('PastLeave')}
+          onPress={handlePastLeavePress}
         >
           <View style={styles.menuOptionIconContainer}>
             <Ionicons name="md-calendar" size={24} color="#000" />

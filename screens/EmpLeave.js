@@ -63,7 +63,7 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
     try {
 
       // Make a POST request to the API with the token
-      const response = await fetch('https://e5ff-115-69-246-225.ngrok-free.app/leavesummary', {
+      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/leavesummary', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
 
   const handleSubmit = () => {
 
-    fetch("https://e5ff-115-69-246-225.ngrok-free.app/leaverequest",{
+    fetch("https://213a-45-114-251-176.ngrok-free.app/leaverequest",{
       method:"POST",
       headers:{
         Authorization: `Bearer ${token}`,
@@ -173,7 +173,12 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
         />
       </View>
 
-      <Button title="Submit" onPress={handleSubmit} style={styles.submitButton} />
+      <TouchableOpacity
+          style={styles.submitButton}
+          onPress={handleSubmit}
+        >
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
 
       <View style={styles.summaryContainer}>
         <Text style={styles.summaryText}>
@@ -237,7 +242,18 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   submitButton: {
+    backgroundColor: '#388cd6',
+    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: hp('2%'), // Responsive margin based on screen height
+  },
+  submitButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: wp('4%'), // Responsive font size based on screen width
   },
   summaryContainer: {
     borderWidth: 1,

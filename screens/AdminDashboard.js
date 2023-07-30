@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { SafeAreaView, StatusBar, Platform } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const AdminDashboard = ({navigation}) => {
   const [leaveRequests, setLeaveRequests] = useState([]);
@@ -33,7 +34,7 @@ const AdminDashboard = ({navigation}) => {
       // setLeaveRequests(data);
       // //console.log(data);
 
-      const response = await fetch('https://e5ff-115-69-246-225.ngrok-free.app/displayleave', {
+      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/displayleave', {
       method: 'POST',
     });
     const responseData = await response.text();
@@ -62,7 +63,7 @@ const AdminDashboard = ({navigation}) => {
     // Replace this with your actual API call
 
     const wfhRequestsData = [
-      { id: 1, employeeName: 'Shane Coelho', startDate: '2023-06-01', endDate: '2023-06-05' },
+      { id: 1, employeeName: 'Shawn Dsilva', startDate: '2023-06-01', endDate: '2023-06-05' },
       { id: 2, employeeName: 'Rahul Sharma', startDate: '2023-06-10', endDate: '2023-06-12' },
       { id: 3, employeeName: 'Dewain Diago', startDate: '2023-06-10', endDate: '2023-06-12' },
       { id: 4, employeeName: 'Jane Smith', startDate: '2023-06-10', endDate: '2023-06-12' },
@@ -90,6 +91,11 @@ const AdminDashboard = ({navigation}) => {
   const handleWfhPress = (employeeId) => {
     // Navigate to another screen and pass employeeId as a prop
     navigation.navigate('EmpDetails', { employeeId });
+  };
+
+  const handleLogout = () => {
+    // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
+    navigation.navigate('Home');
   };
 
   const renderLeaveRequest = ({ item }) => (
@@ -134,7 +140,11 @@ const AdminDashboard = ({navigation}) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <View style={styles.container}>
-      <Text style={styles.title}>Admin Dashboard</Text>
+      {/* Add the logout icon in the header */}
+      {/* <TouchableOpacity style={styles.logoutIconContainer} onPress={handleLogout}>
+          <Ionicons name="exit-outline" size={24} color="black" />
+        </TouchableOpacity>
+      <Text style={styles.title}>Dashboard</Text> */}
 
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>Leave Requests</Text>
@@ -273,6 +283,13 @@ const styles = StyleSheet.create({
     },
     scrollContentContainer: {
       flexGrow: 1,
+    },
+    logoutIconContainer: {
+      position: 'absolute',
+      top: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
+      right: 16,
+      padding: 8,
+      zIndex: 1,
     },
   });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, Alert, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, TextInput, Button, Alert, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native'; // Import ActivityIndicator
 import { SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -19,6 +19,7 @@ const EmpSignup = ({navigation,navigation:{goBack}}) => {
     return () => backHandler.remove();
   }, []);
 
+  const [loading, setLoading] = useState(false);
   const [employeeId, setEmployeeId] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
@@ -51,49 +52,57 @@ const EmpSignup = ({navigation,navigation:{goBack}}) => {
       Alert.alert('Error', 'Password should be between 6 and 10 characters');
     } else {
 
-      fetch("https://e5ff-115-69-246-225.ngrok-free.app/signup",{
-        method:"POST",
-        headers:{
-          'Content-Type':'application/json'
+      setLoading(true);
+      fetch("https://213a-45-114-251-176.ngrok-free.app/signup", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json'
         },
-      body:JSON.stringify({
-        "employeeId":employeeId,
-        "name":name,
-        "phone":phone,
-        "email":email,
-        "address":address,
-        "designation":designation,
-        "username":username,
-        "password":password
+        body: JSON.stringify({
+          "employeeId": employeeId,
+          "name": name,
+          "phone": phone,
+          "email": email,
+          "address": address,
+          "designation": designation,
+          "username": username,
+          "password": password
+        })
       })
-      })
-      .then(res=>res.json())
-      .then(async data=>{
-        console.log(data)
-        try {
-          await AsyncStorage.setItem('token', data.token);
-        } catch (e) {
-          console.log('error',e)
-        }
-      })
-      // Perform signup logic here
-      // e.g., make API call to register the employee
-
-      // Reset the form after successful signup
-      setEmployeeId('');
-      setName('');
-      setPhone('');
-      setEmail('');
-      setAddress('');
-      setDesignation('');
-      setUsername('');
-      setPassword('');
-      setProfileImage(null);
-
-      
-
-      // Alert.alert('Success', 'Signup successful!');
-      navigation.navigate('EmpDashboard');
+        .then(res => res.json())
+        .then(async data => {
+          console.log(data);
+          setLoading(false); // Set loading to false when the response is received
+          
+          if (data.message && data.message === "Username Already Taken") {
+            // Display an alert if the username already exists
+            Alert.alert('Error', 'Username Already Exists');
+          } else {
+            // If the username does not exist, proceed with signup
+            try {
+              await AsyncStorage.setItem('token', data.token);
+              // Reset the form after successful signup
+              setEmployeeId('');
+              setName('');
+              setPhone('');
+              setEmail('');
+              setAddress('');
+              setDesignation('');
+              setUsername('');
+              setPassword('');
+              setProfileImage(null);
+              navigation.navigate('EmpDashboard');
+            } catch (e) {
+              console.log('error', e)
+            }
+          }
+        })
+        .catch(error => {
+          // Handle API request errors here
+          console.error("API Request Error:", error);
+          setLoading(false); // Set loading to false on error
+          Alert.alert('Error', 'Something went wrong. Please try again later.');
+        });
     }
   };
 
@@ -172,10 +181,16 @@ const EmpSignup = ({navigation,navigation:{goBack}}) => {
           />
           {/* Implement profile image upload logic here */}
           {/* Use a library like 'react-native-image-picker' or 'react-native-document-picker' */}
-          <Button title="Signup" onPress={handleSignup} />
-        </View>
-      </ScrollView>
-    </View>
+          <TouchableOpacity style={styles.signupButton} onPress={handleSignup} disabled={loading}>
+            {loading ? (
+              <ActivityIndicator color="white" size="small" /> // Show loading animation
+            ) : (
+              <Text style={styles.signupButtonText}>Signup</Text>
+            )}
+          </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -213,6 +228,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333',
     marginBottom: 15,
+  },
+  loadingIndicator: {
+    marginTop: 20,
+  },
+  signupButton: {
+    width: '100%',
+    backgroundColor: '#007bff',
+    borderRadius: 8,
+    paddingVertical: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  signupButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 

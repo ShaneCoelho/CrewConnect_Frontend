@@ -25,7 +25,7 @@ const AdminLogin = ({navigation,navigation:{goBack}}) => {
     // Perform login logic here
     console.log('Login pressed');
 
-    navigation.navigate('AdminDashboard');
+    navigation.navigate('AdminDrawer');
   };
 
 
@@ -38,7 +38,7 @@ const AdminLogin = ({navigation,navigation:{goBack}}) => {
       resizeMode="cover"
     >
       <View style={styles.container}>
-        <Image source={require('./favicon.png')} style={styles.logo} resizeMode="contain" />
+        <Image source={require('./CMOTS_Logo.jpg')} style={styles.logo} resizeMode="contain" />
         <TextInput
           style={styles.input}
           placeholder="Enter username"
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: 'rgba(255, 255, 255, 255)',
     padding: 16,
     borderRadius: 10,
     width: '80%',

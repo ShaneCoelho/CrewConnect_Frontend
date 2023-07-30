@@ -43,7 +43,7 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
 
   const fetchLeaveSummary = async () => {
     try {
-      const response = await fetch('https://e5ff-115-69-246-225.ngrok-free.app/empleavesummary', {
+      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/empleavesummary', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
 
     setApproveDate(new Date());
 
-    fetch("https://e5ff-115-69-246-225.ngrok-free.app/approveleave",{
+    fetch("https://213a-45-114-251-176.ngrok-free.app/approveleave",{
         method:"POST",
         headers:{
           'Content-Type':'application/json'
@@ -75,6 +75,7 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
         "Lid":"64a157f9be7b86a0705c70de",
         "id":id,
         "fromdate":fromdate,
+        "todate":todate,
         "approvedate":approvedate.toISOString().split('T')[0]
       })
       })
@@ -85,7 +86,7 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
 
   const handleRejectLeave = () => {
 
-    fetch("https://e5ff-115-69-246-225.ngrok-free.app/rejectleave",{
+    fetch("https://213a-45-114-251-176.ngrok-free.app/rejectleave",{
         method:"POST",
         headers:{
           'Content-Type':'application/json'

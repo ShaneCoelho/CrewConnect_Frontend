@@ -36,10 +36,10 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <View style={styles.container}>
-      <Image source={require('./favicon.png')} style={styles.logo} />
+      <Image source={require('./CMOTS_Logo.jpg')} style={styles.logo} />
       <Text style={styles.heading}>Welcome to Employee App</Text>
       <TouchableOpacity style={styles.button} onPress={handleAdminLogin}>
-        <Text style={styles.buttonText}>Admin Login</Text>
+        <Text style={styles.buttonText}>PM Login</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleEmployeeLogin}>
         <Text style={styles.buttonText}>Employee Login</Text>

@@ -13,8 +13,8 @@ const dummyLeaves = [
 ];
 
 const dummyWFHRequests = [
-  { id: '1', fromdate: '2023-06-25', todate: '2023-06-26', status: 'Approve' },
-  { id: '2', fromdate: '2023-07-05', todate: '2023-07-06', status: 'Reject' },
+  // { id: '1', fromdate: '2023-06-25', todate: '2023-06-26', status: 'Approve' },
+  // { id: '2', fromdate: '2023-07-05', todate: '2023-07-06', status: 'Reject' },
 ];
 
 
@@ -55,7 +55,7 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
       const token = await AsyncStorage.getItem('token');
 
       // Make a POST request to the API with the token
-      const response = await fetch('https://e5ff-115-69-246-225.ngrok-free.app/pastleave', {
+      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/pastleave', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

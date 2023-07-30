@@ -18,6 +18,10 @@ import Loading from './screens/Loading';
 import AdminPastLeave from './screens/AdminPastLeave';
 import EmpProfile from './screens/EmpProfile';
 import EmpDrawerContent from './screens/EmpDrawerContent';
+import EmpPersonalInfo from './screens/EmpPersonalInfo';
+import EmpPastLeave from './screens/EmpPastLeave';
+import AdminDrawer from './screens/AdminDrawer';
+import AdminEmpSearch from './screens/AdminEmpSearch';
 import { Text, View, StyleSheet, Screen } from 'react-native';
 import Constants from 'expo-constants';
 
@@ -58,16 +62,20 @@ const App = () => {
               <>
                 <Stack.Screen options={{ headerShown: false }} name="EmpDashboard" component={EmpDashboard} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpApply" component={EmpApply} />
-                <Stack.Screen name="EmpLeave" component={EmpLeave} />
+                <Stack.Screen name="EmpLeave" component={EmpLeave}  options={{ title: 'Leave' }} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpDetails" component={EmpDetails} />
-                <Stack.Screen options={{ headerShown: false }} name="AdminDashboard" component={AdminDashboard} />
+                {/* <Stack.Screen options={{ headerShown: false }} name="AdminDashboard" component={AdminDashboard} /> */}
+                <Stack.Screen options={{ headerShown: false }} name="AdminDrawer" component={AdminDrawer} />
                 <Stack.Screen options={{ headerShown: false }} name="AdminLeave" component={AdminLeave} />
+                <Stack.Screen options={{ headerShown: false }} name="AdminEmpSearch" component={AdminEmpSearch} />
                 <Stack.Screen options={{ headerShown: false }} name="Home" component={Home} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpLogin" component={EmpLogin} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpSignup" component={EmpSignup} />
                 <Stack.Screen options={{ headerShown: false }} name="AdminPastLeave" component={AdminPastLeave} />
+                <Stack.Screen options={{ headerShown: false }} name="EmpPersonalInfo" component={EmpPersonalInfo} />
+                <Stack.Screen options={{ headerShown: false }} name="EmpPastLeave" component={EmpPastLeave} />
                 {/* <Stack.Screen options={{ headerShown: false }} name="EmpDrawerContent" component={EmpDrawerContent} /> */}
-                <Stack.Screen name="EmpProfile" component={EmpProfile} />
+                <Stack.Screen name="EmpProfile" component={EmpProfile}  options={{ title: 'Profile' }} />
                 <Stack.Screen options={{ headerShown: false }} name="AdminLogin" component={AdminLogin} />
 
               </>
@@ -84,11 +92,15 @@ const App = () => {
                 <Stack.Screen options={{ headerShown: false }} name="AdminLogin" component={AdminLogin} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpDashboard" component={EmpDashboard} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpApply" component={EmpApply} />
-                <Stack.Screen name="EmpLeave" component={EmpLeave} />
+                <Stack.Screen name="EmpLeave" component={EmpLeave}  options={{ title: 'Leave' }} />
                 <Stack.Screen options={{ headerShown: false }} name="EmpDetails" component={EmpDetails} />
-                <Stack.Screen options={{ headerShown: false }} name="AdminDashboard" component={AdminDashboard} />
+                {/* <Stack.Screen options={{ headerShown: false }} name="AdminDashboard" component={AdminDashboard} /> */}
+                <Stack.Screen options={{ headerShown: false }} name="AdminDrawer" component={AdminDrawer} />
+                <Stack.Screen options={{ headerShown: false }} name="AdminEmpSearch" component={AdminEmpSearch} />
                 <Stack.Screen options={{ headerShown: false }} name="AdminPastLeave" component={AdminPastLeave} />
-                <Stack.Screen  name="EmpProfile" component={EmpProfile} />
+                <Stack.Screen options={{ headerShown: false }} name="EmpPersonalInfo" component={EmpPersonalInfo} />
+                <Stack.Screen name="EmpProfile" component={EmpProfile}  options={{ title: 'Profile' }} />
+                <Stack.Screen options={{ headerShown: false }} name="EmpPastLeave" component={EmpPastLeave} />
                 {/* <Stack.Screen options={{ headerShown: false }} name="EmpDrawerContent" component={EmpDrawerContent} /> */}
                 <Stack.Screen options={{ headerShown: false }} name="AdminLeave" component={AdminLeave} />
 

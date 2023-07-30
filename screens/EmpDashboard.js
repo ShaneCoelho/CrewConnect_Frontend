@@ -49,7 +49,7 @@ const EmpDashboard = ({ navigation }) => {
       const token = await AsyncStorage.getItem('token');
 
       // Make a POST request to the API with the token
-      const response = await fetch('https://e5ff-115-69-246-225.ngrok-free.app/loaddashboard', {
+      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/loaddashboard', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
