@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "EmployeeApp",
-    "slug": "EmployeeApp",
+    "name": "CrewConnect",
+    "slug": "CrewConnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/CMOTS_Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/CMOTS_Logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.shanecoelho.CrewConnect"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "aac13490-8438-433e-95e5-64412e800c71"
+      }
     }
   }
 }

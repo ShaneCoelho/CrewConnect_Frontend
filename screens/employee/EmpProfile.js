@@ -8,7 +8,7 @@ import * as FileSystem from 'expo-file-system';
 
 const EmpProfile = ({navigation,navigation:{goBack}}) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const employeeName = 'Shane Coelho';
+  const [employeeName, setEmployeeName]= useState("")
 
   useEffect(() => {
     const backAction = () => {
@@ -26,12 +26,38 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
 
   useEffect(() => {
     fetchProfilePhoto();
-  }, [profilePhoto]);
+    fetchEmployeeName();
+  }, []);
 
   const handleLogout = () => {
     AsyncStorage.clear().then(()=>{
         navigation.navigate("Home")
       })
+  };
+
+
+  const fetchEmployeeName = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+
+      // Make a POST request to the API with the token
+      const response = await fetch('https://crewconnect.onrender.com/empname', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setEmployeeName(data.name);
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
   };
 
   const selectProfilePhoto = async () => {
@@ -53,35 +79,36 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
 
     if (!result.canceled) {
       const { uri } = result;
-      setProfilePhoto({ uri });
+      setProfilePhoto(uri);
 
       // Upload the selected profile photo to the server
       const formData = new FormData();
       console.log(uri)
 
 
-    const fileInfo = await FileSystem.getInfoAsync(uri);
-    const filename = fileInfo.uri.split('/').pop();
-    console.log(filename)
+    // const fileInfo = await FileSystem.getInfoAsync(uri);
+    // const filename = fileInfo.uri.split('/').pop();
+    // console.log(filename)
 
 
      // Set the content type based on the file extension
-     const extension = filename.split('.').pop();
-     const contentType = `image/${extension}`;
-     console.log(contentType)
+    //  const extension = filename.split('.').pop();
+    //  const contentType = `image/${extension}`;
+    //  console.log(contentType)
 
-      formData.append('file', {
-        uri: uri,
-      name: filename,
-      type: contentType,
+      formData.append('profile', {
+      name: new Date() + "_profile",
+      uri: result.uri,
+      type:"image/jpg"
       });
 
       console.log(formData)
 
       // Make an API request to update the profile photo
-      fetch("https://213a-45-114-251-176.ngrok-free.app/avatar", {
+      fetch("https://crewconnect.onrender.com/upload-profile", {
         method: 'POST',
         headers: {
+          // Accept:'application/json',
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`,
         },
@@ -102,25 +129,25 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
 
     const token = await AsyncStorage.getItem('token');
     // Make an API request to fetch the profile photo
-    try{
-    const response= await fetch("https://213a-45-114-251-176.ngrok-free.app/fetchavatar", {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
 
-    if (response.ok) {
-    const blob = await response.blob();
-    const uri = URL.createObjectURL(blob);
-    console.log(uri)
-    setProfilePhoto({uri});
-  }else{
-    console.log('Error:', response.status);
-  }
-}catch(error){
-    console.log(error);
-  }
+
+  fetch("https://crewconnect.onrender.com/fetch-profile-photo", {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.avatar) {
+        setProfilePhoto(data.avatar);
+      } else {
+        console.log('Avatar not found');
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching avatar:', error);
+    });
       
   };
 
@@ -136,6 +163,11 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
     navigation.navigate('EmpPastLeave');
   };
 
+  const handleSendDocument = () => {
+    // Navigate to the specified screen based on screenName
+    // You can use React Navigation or any other navigation library here
+    navigation.navigate('EmpUploadDoc');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -143,7 +175,7 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
         <TouchableOpacity onPress={selectProfilePhoto}>
           <View style={styles.profilePhotoContainer}>
             <Image
-              source={profilePhoto || require('./favicon.png')}
+              source={{uri:profilePhoto}}
               style={styles.profilePhoto}
             />
             <View style={styles.editIcon}>
@@ -166,11 +198,11 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
 
         <TouchableOpacity
           style={styles.menuOptionContainer}
-          onPress={() => navigateToScreen('MyDocuments')}
+          onPress={handleSendDocument}
         >
           <View style={styles.menuOptionIconContainer}>
             <Ionicons name="md-document" size={24} color="#000" />
-            <Text style={styles.menuOption}>My Documents</Text>
+            <Text style={styles.menuOption}>Send Documents</Text>
           </View>
         </TouchableOpacity>
 
@@ -184,7 +216,7 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.menuOptionContainer}
           onPress={() => navigateToScreen('Salary')}
         >
@@ -192,7 +224,7 @@ const EmpProfile = ({navigation,navigation:{goBack}}) => {
             <Ionicons name="md-cash" size={24} color="#000" />
             <Text style={styles.menuOption}>Salary</Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.menuOptionContainer}

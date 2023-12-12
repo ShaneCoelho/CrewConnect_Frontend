@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Dimensions, ScrollView, Alert, TouchableOpacity } from 'react-native';
 import { SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native';
 
-const AdminLeave = ({navigation,navigation:{goBack},route}) => {
+const AdminWfh = ({navigation,navigation:{goBack},route}) => {
 
-  const [takenLeave, setTakenLeave] = useState(0);
-  const [remainingLeave, setRemainingLeave] = useState(0);
   const {id,name,fromdate,todate,reason} = route.params;
   const [approvedate, setApproveDate] = useState(new Date());
 
@@ -23,56 +21,28 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
     return () => backHandler.remove();
   }, []);
 
-  useEffect(()=>{
-
-    fetchLeaveSummary();
-
-  },[takenLeave,remainingLeave])
 
 
 
-  const [leaveFromDate, setLeaveFromDate] = useState('');
-  const [leaveToDate, setLeaveToDate] = useState('');
-  const [leaveReason, setLeaveReason] = useState('');
+  const [wfhFromDate, setWfhFromDate] = useState('');
+  const [wfhToDate, setWfhToDate] = useState('');
+  const [wfhReason, setWfhReason] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  const handlePastLeaveDetails = () => {
-    navigation.navigate('AdminPastLeave', {id});
-  };
-
-
-  const fetchLeaveSummary = async () => {
-    try {
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/empleavesummary', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: id }),
-      });
-
-      const data = await response.json();
-      const { takenLeave, remainingLeave } = data;
-      setTakenLeave(takenLeave);
-      setRemainingLeave(remainingLeave);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
 
 
-  const handleApproveLeave = () => {
+  const handleApproveWfh = () => {
 
     setApproveDate(new Date());
 
-    fetch("https://213a-45-114-251-176.ngrok-free.app/approveleave",{
+    fetch("https://crewconnect.onrender.com/approvewfh",{
         method:"POST",
         headers:{
           'Content-Type':'application/json'
         },
       body:JSON.stringify({
-        "Lid":"64a157f9be7b86a0705c70de",
+        "Lid":"64f43f0eeedc485379bbf3de",
         "id":id,
         "fromdate":fromdate,
         "todate":todate,
@@ -81,25 +51,25 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
       })
 
     setIsButtonDisabled(true); // Disable the buttons
-    Alert.alert('Leave Approved!', `Leave From: ${fromdate}\nLeave To: ${todate}\nReason: ${reason}`);
+    Alert.alert('Wfh Approved!', `Wfh From: ${fromdate}\nWfh To: ${todate}\nReason: ${reason}`);
   };
 
-  const handleRejectLeave = () => {
+  const handleRejectWfh = () => {
 
-    fetch("https://213a-45-114-251-176.ngrok-free.app/rejectleave",{
+    fetch("https://crewconnect.onrender.com/rejectwfh",{
         method:"POST",
         headers:{
           'Content-Type':'application/json'
         },
       body:JSON.stringify({
-        "Lid":"64a157f9be7b86a0705c70de",
+        "Lid":"64f43f0eeedc485379bbf3de",
         "id":id,
         "fromdate":fromdate
       })
       })
 
     setIsButtonDisabled(true); // Disable the buttons
-    Alert.alert('Leave Rejected!', `Leave From: ${fromdate}\nLeave To: ${todate}\nReason: ${reason}`);
+    Alert.alert('Wfh Rejected!', `Wfh From: ${fromdate}\nWfh To: ${todate}\nReason: ${reason}`);
   };
 
   const screenWidth = Dimensions.get('window').width;
@@ -107,7 +77,7 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <View style={styles.container}>
-      <Text style={styles.title}>Employee Leave Details</Text>
+      <Text style={styles.title}>Employee WFH Details</Text>
 
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Employee Name:</Text>
@@ -116,56 +86,36 @@ const AdminLeave = ({navigation,navigation:{goBack},route}) => {
 
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>From Date:</Text>
-        <Text style={styles.text}>{leaveFromDate ? leaveFromDate : fromdate}</Text>
+        <Text style={styles.text}>{wfhFromDate ? wfhFromDate : fromdate}</Text>
       </View>
 
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>To Date:</Text>
-        <Text style={styles.text}>{leaveToDate ? leaveToDate : todate}</Text>
+        <Text style={styles.text}>{wfhToDate ? wfhToDate : todate}</Text>
       </View>
 
       <View style={styles.fieldContainer}>
         <Text style={styles.label}>Reason:</Text>
         <ScrollView style={styles.reasonScrollView}>
-          <Text style={styles.reasonText}>{leaveReason ? leaveReason : reason}</Text>
+          <Text style={styles.reasonText}>{wfhReason ? wfhReason : reason}</Text>
         </ScrollView>
       </View>
 
       <View style={[styles.buttonContainer, { width: screenWidth * 0.9 }]}>
         <Button
-          title="Approve Leave"
-          onPress={handleApproveLeave}
+          title="Approve WFH"
+          onPress={handleApproveWfh}
           disabled={isButtonDisabled} // Disable the button when isButtonDisabled is true
           color="green"
         />
         <Button
-          title="Reject Leave"
-          onPress={handleRejectLeave}
+          title="Reject WFH"
+          onPress={handleRejectWfh}
           disabled={isButtonDisabled} // Disable the button when isButtonDisabled is true
           color="red"
         />
       </View>
 
-      {/* Past Leave Summary */}
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summaryTitle}>Past Leave Summary</Text>
-        <View style={styles.summaryItem}>
-          <Text style={styles.summaryText}>Leaves Taken:</Text>
-          <Text style={styles.summaryValue}>{takenLeave}</Text>
-        </View>
-        <View style={styles.summaryItem}>
-          <Text style={styles.summaryText}>Leaves Remaining:</Text>
-          <Text style={styles.summaryValue}>{remainingLeave}</Text>
-        </View>
-        <View style={styles.summaryItem}>
-          <Text style={styles.summaryText}>Extra Days Worked:</Text>
-          <Text style={styles.summaryValue}>5</Text>
-        </View>
-
-        <TouchableOpacity style={styles.pastLeaveButton} onPress={handlePastLeaveDetails}>
-    <Text style={styles.pastLeaveButtonText}>View Past Leave Details</Text>
-  </TouchableOpacity>
-      </View>
     </View>
     </SafeAreaView>
   );
@@ -241,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdminLeave;
+export default AdminWfh;

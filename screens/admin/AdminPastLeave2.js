@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, ActivityIndicator, Dimensions } from 'react-native';
 import { SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
 const itemWidth = width * 0.9;
 
-const EmpPastLeave = ({navigation,navigation:{goBack}}) => {
+const AdminPastLeave2 = ({navigation,navigation:{goBack},route}) => {
   const [pastLeaves, setPastLeaves] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {employeeId} = route.params;
 
   useEffect(() => {
     const backAction = () => {
@@ -35,26 +35,15 @@ const EmpPastLeave = ({navigation,navigation:{goBack}}) => {
   const fetchPastLeaveDetails = async () => {
 
     try {
-    //   const response = await fetch("https://213a-45-114-251-176.ngrok-free.app/pastleavedetails",{
-    //     method:"POST",
-    //     headers:{
-    //       'Content-Type':'application/json'
-    //     },
-    //   body:JSON.stringify({
-    //     "id":id
-    //   })
-    //   })
-
-    const token = await AsyncStorage.getItem('token');
-
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/emppastleave', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+      const response = await fetch("https://crewconnect.onrender.com/pastleavedetails2",{
+        method:"POST",
+        headers:{
+          'Content-Type':'application/json'
         },
-        body: JSON.stringify({}),
-      });
+      body:JSON.stringify({
+        "employeeId":employeeId
+      })
+      })
 
     const responseData = await response.text();
     //console.log(responseData); // Log the response data
@@ -74,7 +63,7 @@ const EmpPastLeave = ({navigation,navigation:{goBack}}) => {
 
   const renderLeaveItem = ({ item }) => (
     <View style={styles.leaveItem}>
-      {/* <Text style={styles.leaveText}>Employee: {item.name}</Text> */}
+      <Text style={styles.leaveText}>Employee: {item.name}</Text>
       <Text style={styles.leaveText}>From: {item.fromdate}</Text>
       <Text style={styles.leaveText}>To: {item.todate}</Text>
       <Text style={styles.leaveText}>Reason: {item.reason}</Text>
@@ -154,4 +143,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default EmpPastLeave;
+export default AdminPastLeave2;

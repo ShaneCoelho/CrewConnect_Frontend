@@ -33,7 +33,7 @@ const EmpLogin = ({ navigation, navigation: { goBack } }) => {
     console.log('Login pressed');
     setIsLoading(true);
 
-    fetch('https://213a-45-114-251-176.ngrok-free.app/signin', {
+    fetch('https://crewconnect.onrender.com/signin', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -81,12 +81,12 @@ const EmpLogin = ({ navigation, navigation: { goBack } }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
       <ImageBackground
-        source={require('./Background.jpg')}
+        source={require('../../assets/images/Background.jpg')}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
         <View style={styles.container}>
-          <Image source={require('./CMOTS_Logo.jpg')} style={styles.logo} resizeMode="contain" />
+          <Image source={require('../../assets/images/CMOTS_Logo.jpg')} style={styles.logo} resizeMode="contain" />
           <TextInput
             style={styles.input}
             placeholder="Enter username"

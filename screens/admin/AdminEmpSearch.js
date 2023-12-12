@@ -83,7 +83,7 @@ const AdminEmpSearch = ({navigation,navigation:{goBack}}) => {
 
   const fetchEmployees = async () => {
     try {
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/fetchemployees', {
+      const response = await fetch('https://crewconnect.onrender.com/fetchemployees', {
         method: 'POST',
       });
 
@@ -103,8 +103,13 @@ const AdminEmpSearch = ({navigation,navigation:{goBack}}) => {
     }
   };
 
+  const handleSelectedEmployee = (id,employeeId,name,designation,phone,email,address,Avatar) => {
+    console.log(id)
+    navigation.navigate('AdminEmpProfiles', { id, employeeId, name, designation, phone, email, address,Avatar});
+  };
+
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.contactItem}>
+    <TouchableOpacity style={styles.contactItem} onPress={()=>handleSelectedEmployee(item.id,item.employeeId,item.name,item.designation,item.phone,item.email,item.address,item.Avatar)}>
       <Text style={styles.contactName}>{item.name}</Text>
       <Text style={styles.designation}>{item.designation}</Text>
     </TouchableOpacity>

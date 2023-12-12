@@ -18,17 +18,37 @@ const ProfileDrawerContent = ({navigation}) => {
         // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
         navigation.navigate('AdminEmpSearch');
       };
+
+      const handleMeeting = () => {
+        // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
+        navigation.navigate('AdminMeeting');
+      };
+
+      const handleMessageEmployee = () => {
+        // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
+        navigation.navigate('AdminMessageSearch');
+      };
+
+      const handleSendNotice = () => {
+        // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
+        navigation.navigate('AdminSendNotice');
+      };
+
+      const handleViewDocuments = () => {
+        // Replace 'LoginScreen' with the name of the screen you want to navigate to after logout.
+        navigation.navigate('AdminViewDoc');
+      };
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <View style={styles.drawerContent}>
       <View style={styles.profileContainer}>
         <Image
-          source={require('./favicon.png')} // Replace with the actual path to the profile photo
+          source={require('../../assets/images/CMOTS_Logo.jpg')} // Replace with the actual path to the profile photo
           style={styles.profilePhoto}
         />
-        <Text style={styles.name}>John Doe</Text>
+        <Text style={styles.name}>Project Manager</Text>
       </View>
-      <TouchableOpacity style={styles.optionContainer} onPress={() => handleOptionPress('MessageEmployee')}>
+      <TouchableOpacity style={styles.optionContainer} onPress={handleMessageEmployee}>
         <Ionicons name="chatbubble-ellipses-outline" size={24} color="#888" style={styles.optionIcon} />
         <Text style={styles.optionText}>Message Employee</Text>
       </TouchableOpacity>
@@ -36,9 +56,17 @@ const ProfileDrawerContent = ({navigation}) => {
         <Ionicons name="search-outline" size={24} color="#888" style={styles.optionIcon} />
         <Text style={styles.optionText}>Search Employee</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.optionContainer} onPress={() => handleOptionPress('Meeting')}>
+      <TouchableOpacity style={styles.optionContainer} onPress={handleMeeting}>
         <Ionicons name="calendar-outline" size={24} color="#888" style={styles.optionIcon} />
-        <Text style={styles.optionText}>Meeting</Text>
+        <Text style={styles.optionText}>Meeting/Holiday</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.optionContainer} onPress={handleSendNotice}>
+        <Ionicons name="mail-outline" size={24} color="#888" style={styles.optionIcon} />
+        <Text style={styles.optionText}>Send Notice</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.optionContainer} onPress={handleViewDocuments}>
+        <Ionicons name="document-text-outline" size={24} color="#888" style={styles.optionIcon} />
+        <Text style={styles.optionText}>View Documents</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.optionContainer} onPress={handleLogout}>
         <Ionicons name="exit-outline" size={24} color="#888" style={styles.optionIcon} />

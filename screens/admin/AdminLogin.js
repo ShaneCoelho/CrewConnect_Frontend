@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, ImageBackground, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, ImageBackground, Image, Alert } from 'react-native';
 import { SafeAreaView, StatusBar, Platform, BackHandler } from 'react-native';
 
 const AdminLogin = ({navigation,navigation:{goBack}}) => {
@@ -21,11 +21,40 @@ const AdminLogin = ({navigation,navigation:{goBack}}) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    // Perform login logic here
-    console.log('Login pressed');
+  // const handleLogin = () => {
+  //   // Perform login logic here
+  //   console.log('Login pressed');
 
-    navigation.navigate('AdminDrawer');
+  //   navigation.navigate('AdminDrawer');
+  // };
+
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('https://crewconnect.onrender.com/adminlogin', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.message === 'Login successful') {
+          // Navigate to another screen if credentials are correct
+          navigation.navigate('AdminDrawer');
+        } else {
+          // Display an alert for incorrect credentials
+          Alert.alert('Error', 'Enter proper username and password');
+        }
+      } else {
+        // Handle non-200 status codes, e.g., network issues
+        Alert.alert('Error', 'Enter proper username and password');
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle other errors here
+    }
   };
 
 
@@ -33,12 +62,12 @@ const AdminLogin = ({navigation,navigation:{goBack}}) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <ImageBackground
-      source={require('./Background.jpg')}
+      source={require('../../assets/images/Background.jpg')}
       style={styles.backgroundImage}
       resizeMode="cover"
     >
       <View style={styles.container}>
-        <Image source={require('./CMOTS_Logo.jpg')} style={styles.logo} resizeMode="contain" />
+        <Image source={require('../../assets/images/CMOTS_Logo.jpg')} style={styles.logo} resizeMode="contain" />
         <TextInput
           style={styles.input}
           placeholder="Enter username"

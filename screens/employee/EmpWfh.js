@@ -8,10 +8,9 @@ import {
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const EmpLeave = ({navigation,navigation:{goBack}}) => {
+const EmpWfh = ({navigation,navigation:{goBack}}) => {
 
   const [token, setToken] = useState('');
-  const [summary, setSummary] = useState({}); 
 
   useEffect(() => {
 
@@ -38,13 +37,8 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
     );
 
     return () => backHandler.remove();
-  }, [summary]);
+  }, []);
 
-  useEffect(()=>{
-
-    fetchSummary();
-
-  },[summary])
 
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -55,30 +49,6 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
   const [isFromDateSelected, setIsFromDateSelected] = useState(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
-
-  const fetchSummary = async () => {
-    // Fetch leave requests from API and update state
-    // Replace this with your actual API call
-
-    try {
-
-      // Make a POST request to the API with the token
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/leavesummary', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({}),
-      });
-
-      // Process the response data
-      const responseData = await response.json();
-      setSummary(responseData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
 
 
   const handleDateSelection = (date) => {
@@ -102,7 +72,7 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
 
   const handleSubmit = () => {
 
-    fetch("https://213a-45-114-251-176.ngrok-free.app/leaverequest",{
+    fetch("https://crewconnect.onrender.com/wfhrequest",{
       method:"POST",
       headers:{
         Authorization: `Bearer ${token}`,
@@ -116,11 +86,11 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
     })
     .then(res=>res.json())
 
-    Alert.alert('Success', 'Request for leave submitted');
+    Alert.alert('Success', 'Request for wfh submitted');
 
     // Handle form submission here
     // You can send the leave request to the server or perform any other action
-    console.log('Leave request submitted');
+    console.log('Wfh request submitted');
     console.log('From:', fromDate);
     console.log('To:', toDate);
   };
@@ -128,7 +98,7 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
     <View style={styles.container}>
-      <Text style={styles.heading}>Request Leave</Text>
+      <Text style={styles.heading}>Request WFH</Text>
 
       <View style={styles.datePickerContainer}>
         <Text style={styles.label}>From:</Text>
@@ -179,18 +149,6 @@ const EmpLeave = ({navigation,navigation:{goBack}}) => {
         >
           <Text style={styles.submitButtonText}>Submit</Text>
         </TouchableOpacity>
-
-      <View style={styles.summaryContainer}>
-        <Text style={styles.summaryText}>
-          Past Leaves Taken: <Text style={styles.summaryValue}>{summary.takenLeave}</Text>
-        </Text>
-        <Text style={styles.summaryText}>
-          Leaves Remaining: <Text style={styles.summaryValue}>{summary.remainingLeave}</Text>
-        </Text>
-        <Text style={styles.summaryText}>
-          Extra Days Worked: <Text style={styles.summaryValue}>{extraDaysWorked}</Text>
-        </Text>
-      </View>
     </View>
     </SafeAreaView>
   );
@@ -271,4 +229,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmpLeave;
+export default EmpWfh;

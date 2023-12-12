@@ -53,7 +53,7 @@ const EmpSignup = ({navigation,navigation:{goBack}}) => {
     } else {
 
       setLoading(true);
-      fetch("https://213a-45-114-251-176.ngrok-free.app/signup", {
+      fetch("https://crewconnect.onrender.com/signup", {
         method: "POST",
         headers: {
           'Content-Type': 'application/json'

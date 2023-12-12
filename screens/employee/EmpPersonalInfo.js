@@ -68,7 +68,7 @@ const EmpPersonalInfo = ({ navigation, navigation: { goBack } }) => {
       const token = await AsyncStorage.getItem('token');
 
       // Make a POST request to the API with the token
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/personalinformation', {
+      const response = await fetch('https://crewconnect.onrender.com/personalinformation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -88,6 +88,7 @@ const EmpPersonalInfo = ({ navigation, navigation: { goBack } }) => {
       }
 
       setPersonalInfo(data);
+      console.log(personalinfo)
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -129,7 +130,7 @@ const EmpPersonalInfo = ({ navigation, navigation: { goBack } }) => {
       // Make API request here to save profile information
       // Replace 'apiEndpoint' with your actual API endpoint
       try {
-        const response = await fetch("https://213a-45-114-251-176.ngrok-free.app/updateempinfo", {
+        const response = await fetch("https://crewconnect.onrender.com/updateempinfo", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

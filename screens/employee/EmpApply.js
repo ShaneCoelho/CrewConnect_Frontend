@@ -26,12 +26,13 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
     // Simulating fetching leaves and work from home requests data from an API or database
     // Replace this with your actual API call or data retrieval logic
 
-    setTimeout(() => {
-      // setLeaves(dummyLeaves);
-      setWFHRequests(dummyWFHRequests);
-    }, 1000);
+    // setTimeout(() => {
+    //   // setLeaves(dummyLeaves);
+    //   setWFHRequests(dummyWFHRequests);
+    // }, 1000);
 
     fetchPastLeave();
+    fetchPastWfh();
 
     const backAction = () => {
       navigation.goBack();
@@ -55,7 +56,7 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
       const token = await AsyncStorage.getItem('token');
 
       // Make a POST request to the API with the token
-      const response = await fetch('https://213a-45-114-251-176.ngrok-free.app/pastleave', {
+      const response = await fetch('https://crewconnect.onrender.com/pastleave', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -71,16 +72,33 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
       console.error('Error fetching data:', error);
     }
 
+  };
 
-    // const leaveRequestsData = [
-    //   { id: 1, employeeName: 'John Doe', startDate: '2023-06-01', endDate: '2023-06-05' },
-    //   { id: 2, employeeName: 'Jane Smith', startDate: '2023-06-10', endDate: '2023-06-12' },
-    //   { id: 3, employeeName: 'Jane Smith', startDate: '2023-06-10', endDate: '2023-06-12' },
-    //   { id: 4, employeeName: 'Jane Smith', startDate: '2023-06-10', endDate: '2023-06-12' },
-    //   // ...
-    // ];
+  const fetchPastWfh = async () => {
+    // Fetch leave requests from API and update state
+    // Replace this with your actual API call
 
-    // setLeaveRequests(leaveRequestsData);
+    try {
+      // Retrieve the token from AsyncStorage
+      const token = await AsyncStorage.getItem('token');
+
+      // Make a POST request to the API with the token
+      const response = await fetch('https://crewconnect.onrender.com/pastwfh', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({}),
+      });
+
+      // Process the response data
+      const responseData = await response.json();
+      setWFHRequests(responseData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+
   };
 
   const renderItem = ({ item }) => (
@@ -100,6 +118,7 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
   const applyForWFH = () => {
     // Logic for applying for work from home goes here
     // You can navigate to a new screen/component or display a modal for the form
+    navigation.navigate('EmpWfh');
   };
 
   return (
@@ -135,7 +154,7 @@ const EmpApply = ({ navigation, navigation: { goBack } }) => {
             <FlatList
               data={wfhRequests}
               renderItem={renderItem}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.code}
               contentContainerStyle={styles.listContainer}
             />
           ) : (
